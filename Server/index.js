@@ -21,14 +21,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const allowedOrigins = [
-    'https://ar-job-portal.vercel.app/p',
+    'https://ar-job-portal.vercel.app',
     'http://localhost:5173',
     'http://localhost:3000'
 ];
 
 const corsOptions = {
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        // Agar origin nahi hai, allowed list mein hai, ya *.vercel.app domain se aa raha hai toh allow karein
+        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
