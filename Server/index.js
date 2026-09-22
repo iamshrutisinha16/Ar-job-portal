@@ -28,7 +28,6 @@ const allowedOrigins = [
 
 const corsOptions = {
     origin: function (origin, callback) {
-        // Agar origin nahi hai, allowed list mein hai, ya *.vercel.app domain se aa raha hai toh allow karein
         if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
             callback(null, true);
         } else {
@@ -37,13 +36,17 @@ const corsOptions = {
     },
     credentials: true
 };
-app.use(cors(corsOptions));
+
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 
 app.get("/", (req, res) => {
     res.send("Welcome to the server");
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/company", companyRouter);
